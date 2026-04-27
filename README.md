@@ -1,6 +1,8 @@
 # Real Flame Fireplace (Home Assistant Custom Integration)
 
-Custom Home Assistant integration for Real Flame fireplaces using a local TCP ASCII protocol (no cloud).
+![Real Flame Fireplace Icon](icon.svg)
+
+Custom Home Assistant integration for Real Flame Gas Fireplaces using a local TCP ASCII protocol (no cloud).
 
 - Integration: `real_flame_fireplace`
 - Domain: `real_flame`
@@ -39,6 +41,12 @@ Status responses (when provided) are parsed from `MWIL11,...` and used to refres
 Silence is treated as expected behavior, not failure.
 
 ## Installation (Manual)
+
+Before adding this integration in Home Assistant, complete Wi-Fi onboarding in the official Real Flame mobile app and note the fireplace IP address:
+
+- iOS app: https://apps.apple.com/au/app/real-flame-fire-mkii/id1420347959
+- Connect the fireplace to your home Wi-Fi in the app first.
+- Use the IP address shown/assigned for the fireplace when configuring this integration in Home Assistant.
 
 1. Copy the `custom_components/real_flame` folder from this repository into your Home Assistant config directory:
    - `<config>/custom_components/real_flame/`

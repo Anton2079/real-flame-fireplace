@@ -36,7 +36,7 @@ async def async_setup_entry(
                 state_key=STATE_BURNER_ACTIVE,
                 suffix="burner_active",
                 name="Burner Active",
-                device_class=BinarySensorDeviceClass.HEAT,
+                device_class=None,
             ),
             RealFlameBinarySensor(
                 entry=entry,
@@ -60,7 +60,7 @@ class RealFlameBinarySensor(CoordinatorEntity, BinarySensorEntity):
         state_key: str,
         suffix: str,
         name: str,
-        device_class: BinarySensorDeviceClass,
+        device_class: BinarySensorDeviceClass | None,
     ) -> None:
         super().__init__(coordinator)
         self._entry = entry
@@ -68,7 +68,8 @@ class RealFlameBinarySensor(CoordinatorEntity, BinarySensorEntity):
         self._state_key = state_key
         self._attr_name = f"{base_name} {name}"
         self._attr_unique_id = f"{entry.entry_id}_{suffix}"
-        self._attr_device_class = device_class
+        if device_class is not None:
+            self._attr_device_class = device_class
 
     @property
     def available(self) -> bool:

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Real Flame Fireplace icon">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="flame" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="60%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ef4444"/>
+    </linearGradient>
+  </defs>
+  <rect x="16" y="16" width="224" height="224" rx="28" fill="url(#bg)"/>
+  <rect x="44" y="162" width="168" height="46" rx="12" fill="#0b1220" stroke="#374151" stroke-width="4"/>
+  <path d="M128 62c18 22 23 39 23 54 0 21-13 37-31 42 5-9 5-20-3-31-7-10-9-22-5-34 3-9 8-18 16-31z" fill="url(#flame)"/>
+  <path d="M153 96c12 10 20 24 20 40 0 23-18 42-41 44 10-8 14-20 10-31-4-12-2-23 11-53z" fill="url(#flame)" opacity="0.85"/>
+</svg>
