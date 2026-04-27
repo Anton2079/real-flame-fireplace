@@ -28,6 +28,11 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 
 
+def _entry_host(entry: ConfigEntry) -> str:
+    """Resolve host from options first, then data."""
+    return entry.options.get(CONF_HOST, entry.data[CONF_HOST])
+
+
 def _default_state() -> dict[str, Any]:
     """Provide safe defaults when responses are unavailable."""
     return {
@@ -66,7 +71,7 @@ class RealFlameCoordinator(DataUpdateCoordinator[dict[str, Any]]):
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Real Flame from a config entry."""
-    host = entry.data[CONF_HOST]
+    host = _entry_host(entry)
     client = RealFlameClient(host=host)
 
     coordinator = RealFlameCoordinator(hass, client)
@@ -76,6 +81,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         DATA_CLIENT: client,
         DATA_COORDINATOR: coordinator,
     }
+    entry.async_on_unload(entry.add_update_listener(_async_update_listener))
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
@@ -93,3 +99,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data[DOMAIN].pop(entry.entry_id, None)
 
     return unload_ok
+
+
+async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Reload config entry after updates (options/reconfigure)."""
+    await hass.config_entries.async_reload(entry.entry_id)

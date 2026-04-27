@@ -7,6 +7,8 @@ from datetime import timedelta
 DOMAIN = "real_flame"
 
 DEFAULT_NAME = "Real Flame Fireplace"
+DEVICE_MANUFACTURER = "Real Flame"
+DEVICE_MODEL = "Gas Fireplace"
 DEFAULT_PORT = 3000
 DEFAULT_TARGET_TEMPERATURE = 21
 MIN_TARGET_TEMPERATURE = 6

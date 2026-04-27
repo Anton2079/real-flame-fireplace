@@ -14,6 +14,7 @@ from homeassistant.components.climate.const import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_TEMPERATURE, CONF_NAME, UnitOfTemperature
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -21,6 +22,8 @@ from .const import (
     DATA_CLIENT,
     DATA_COORDINATOR,
     DEFAULT_TARGET_TEMPERATURE,
+    DEVICE_MANUFACTURER,
+    DEVICE_MODEL,
     DOMAIN,
     MAX_TARGET_TEMPERATURE,
     MIN_TARGET_TEMPERATURE,
@@ -57,13 +60,23 @@ class RealFlameClimateEntity(CoordinatorEntity, ClimateEntity):
         super().__init__(coordinator)
         self._entry = entry
         self._client = client
-        self._attr_name = entry.data.get(CONF_NAME)
+        self._attr_name = entry.title
         self._attr_unique_id = f"{entry.entry_id}_climate"
 
     @property
     def available(self) -> bool:
         """Remain available even when status responses are intermittent."""
         return True
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        """Return metadata to group entities under one HA device."""
+        return DeviceInfo(
+            identifiers={(DOMAIN, self._entry.entry_id)},
+            name=self._entry.title,
+            manufacturer=DEVICE_MANUFACTURER,
+            model=DEVICE_MODEL,
+        )
 
     @property
     def target_temperature(self) -> float:

@@ -8,6 +8,14 @@
           "host": "Host",
           "name": "Name (optional)"
         }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Real Flame Fireplace",
+        "description": "Update the host/IP for your fireplace controller.",
+        "data": {
+          "host": "Host",
+          "name": "Name"
+        }
       }
     },
     "error": {
@@ -15,7 +23,25 @@
       "unknown": "Unexpected error"
     },
     "abort": {
-      "already_configured": "This fireplace is already configured."
+      "already_configured": "This fireplace is already configured.",
+      "reconfigure_successful": "Configuration updated successfully."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configure Real Flame Fireplace",
+        "description": "Update connection settings.",
+        "data": {
+          "host": "Host",
+          "name": "Name"
+        }
+      }
+    },
+    "error": {
+      "already_configured": "This fireplace is already configured.",
+      "cannot_connect": "Failed to connect to the fireplace controller.",
+      "unknown": "Unexpected error"
     }
   }
 }
