@@ -40,7 +40,7 @@ Silence is treated as expected behavior, not failure.
 
 ## Installation (Manual)
 
-1. Copy the `real_flame` folder into your Home Assistant custom components directory:
+1. Copy the `custom_components/real_flame` folder from this repository into your Home Assistant config directory:
    - `<config>/custom_components/real_flame/`
 2. Restart Home Assistant.
 3. Go to Settings > Devices & Services > Add Integration.
@@ -58,14 +58,14 @@ Silence is treated as expected behavior, not failure.
 
 ## Repository Layout
 
-- `real_flame/__init__.py` - setup, unload, coordinator
-- `real_flame/manifest.json` - integration metadata
-- `real_flame/config_flow.py` - UI setup flow and connectivity validation
-- `real_flame/client.py` - async TCP protocol client
-- `real_flame/climate.py` - climate entity implementation
-- `real_flame/binary_sensor.py` - burner/fan sensors
-- `real_flame/const.py` - constants and protocol frames
-- `real_flame/translations/en.json` - UI strings
+- `custom_components/real_flame/__init__.py` - setup, unload, coordinator
+- `custom_components/real_flame/manifest.json` - integration metadata
+- `custom_components/real_flame/config_flow.py` - UI setup flow and connectivity validation
+- `custom_components/real_flame/client.py` - async TCP protocol client
+- `custom_components/real_flame/climate.py` - climate entity implementation
+- `custom_components/real_flame/binary_sensor.py` - burner/fan sensors
+- `custom_components/real_flame/const.py` - constants and protocol frames
+- `custom_components/real_flame/translations/en.json` - UI strings
 
 ## Development Notes
 
