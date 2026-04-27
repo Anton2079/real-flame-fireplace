@@ -81,3 +81,8 @@ Before adding this integration in Home Assistant, complete Wi-Fi onboarding in t
 - Control sends are authoritative and optimistic.
 - Polling is optional and never used to confirm command success.
 - Debug logging is included for command sends, polling, and parse failures.
+
+## Icon Notes
+
+- HACS/Home Assistant brand assets are included under `custom_components/real_flame/brand/`.
+- After updating, Home Assistant may cache icons for a short period. If the icon does not update immediately, restart Home Assistant and refresh browser cache.

@@ -1,10 +1,14 @@
 {
   "domain": "real_flame",
   "name": "Real Flame Fireplace",
-  "version": "0.1.2",
-  "documentation": "https://github.com/hacs/integration",
+  "version": "0.1.3",
+  "documentation": "https://github.com/Anton2079/real-flame-fireplace",
+  "issue_tracker": "https://github.com/Anton2079/real-flame-fireplace/issues",
+  "codeowners": [
+    "@Anton2079"
+  ],
+  "integration_type": "device",
   "config_flow": true,
-  "icon": "mdi:fireplace",
   "requirements": [],
   "iot_class": "local_polling"
 }
