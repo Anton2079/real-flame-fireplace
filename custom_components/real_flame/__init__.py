@@ -61,6 +61,13 @@ class RealFlameCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         """Poll status without treating silence as a failure."""
         update = await self.client.poll_status()
         if update:
+            # The fireplace may report a placeholder target while off; keep cached target.
+            if not update.get(STATE_POWERED_ON, False):
+                update[STATE_TARGET_TEMPERATURE] = self.data.get(
+                    STATE_TARGET_TEMPERATURE,
+                    DEFAULT_TARGET_TEMPERATURE,
+                )
+
             self.data.update(update)
             _LOGGER.debug("Coordinator state updated from polled status: %s", self.data)
         else:
