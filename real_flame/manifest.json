@@ -1,0 +1,9 @@
+{
+  "domain": "real_flame",
+  "name": "Real Flame Fireplace",
+  "version": "0.1.0",
+  "documentation": "https://github.com/hacs/integration",
+  "config_flow": true,
+  "requirements": [],
+  "iot_class": "local_polling"
+}

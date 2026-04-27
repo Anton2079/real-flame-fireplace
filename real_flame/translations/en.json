@@ -1,0 +1,21 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add Real Flame Fireplace",
+        "description": "Set the host/IP for your fireplace controller.",
+        "data": {
+          "host": "Host",
+          "name": "Name (optional)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the fireplace controller.",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This fireplace is already configured."
+    }
+  }
+}
