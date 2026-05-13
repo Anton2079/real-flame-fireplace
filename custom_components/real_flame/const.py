@@ -17,8 +17,10 @@ MAX_TARGET_TEMPERATURE = 35
 POLL_INTERVAL = timedelta(seconds=45)
 COMMAND_TIMEOUT_SECONDS = 3.0
 STATUS_READ_TIMEOUT_SECONDS = 0.75
+STATUS_POLL_RETRY_DELAY_SECONDS = 0.5
+MAX_CONSECUTIVE_POLL_FAILURES_BEFORE_WARNING = 3
 
-PLATFORMS = ["climate", "binary_sensor"]
+PLATFORMS = ["climate", "binary_sensor", "sensor"]
 
 # Data keys shared across coordinator/entities.
 DATA_CLIENT = "client"
@@ -28,6 +30,9 @@ STATE_TARGET_TEMPERATURE = "target_temperature"
 STATE_CURRENT_TEMPERATURE = "current_temperature"
 STATE_BURNER_ACTIVE = "burner_active"
 STATE_FAN_ACTIVE = "fan_active"
+STATE_CONNECTED = "connected"
+STATE_HOST = "host"
+STATE_CONSECUTIVE_POLL_FAILURES = "consecutive_poll_failures"
 
 # Protocol frames.
 CMD_POWER_ON_PREFIX = "MWIL2000"

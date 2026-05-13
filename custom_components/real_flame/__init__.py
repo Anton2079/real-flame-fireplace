@@ -16,11 +16,15 @@ from .const import (
     DATA_COORDINATOR,
     DEFAULT_TARGET_TEMPERATURE,
     DOMAIN,
+    MAX_CONSECUTIVE_POLL_FAILURES_BEFORE_WARNING,
     PLATFORMS,
     POLL_INTERVAL,
     STATE_BURNER_ACTIVE,
+    STATE_CONNECTED,
+    STATE_CONSECUTIVE_POLL_FAILURES,
     STATE_CURRENT_TEMPERATURE,
     STATE_FAN_ACTIVE,
+    STATE_HOST,
     STATE_POWERED_ON,
     STATE_TARGET_TEMPERATURE,
 )
@@ -36,6 +40,9 @@ def _entry_host(entry: ConfigEntry) -> str:
 def _default_state() -> dict[str, Any]:
     """Provide safe defaults when responses are unavailable."""
     return {
+        STATE_CONNECTED: False,
+        STATE_CONSECUTIVE_POLL_FAILURES: 0,
+        STATE_HOST: None,
         STATE_POWERED_ON: False,
         STATE_TARGET_TEMPERATURE: DEFAULT_TARGET_TEMPERATURE,
         STATE_CURRENT_TEMPERATURE: None,
@@ -56,11 +63,14 @@ class RealFlameCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         )
         self.client = client
         self.data = _default_state()
+        self.data[STATE_HOST] = client.host
 
     async def _async_update_data(self) -> dict[str, Any]:
         """Poll status without treating silence as a failure."""
         update = await self.client.poll_status()
         if update:
+            update[STATE_CONNECTED] = True
+            update[STATE_CONSECUTIVE_POLL_FAILURES] = 0
             # The fireplace may report a placeholder target while off; keep cached target.
             if not update.get(STATE_POWERED_ON, False):
                 update[STATE_TARGET_TEMPERATURE] = self.data.get(
@@ -71,7 +81,16 @@ class RealFlameCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             self.data.update(update)
             _LOGGER.debug("Coordinator state updated from polled status: %s", self.data)
         else:
+            failures = int(self.data.get(STATE_CONSECUTIVE_POLL_FAILURES, 0)) + 1
+            self.data[STATE_CONNECTED] = False
+            self.data[STATE_CONSECUTIVE_POLL_FAILURES] = failures
             _LOGGER.debug("Coordinator poll returned no status; retaining cached state")
+            if failures >= MAX_CONSECUTIVE_POLL_FAILURES_BEFORE_WARNING:
+                _LOGGER.warning(
+                    "Unable to read status from Real Flame at %s for %s consecutive polls",
+                    self.data.get(STATE_HOST),
+                    failures,
+                )
 
         return self.data.copy()
 

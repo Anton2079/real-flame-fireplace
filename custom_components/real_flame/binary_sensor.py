@@ -15,6 +15,7 @@ from .const import (
     DEVICE_MODEL,
     DOMAIN,
     STATE_BURNER_ACTIVE,
+    STATE_CONNECTED,
     STATE_FAN_ACTIVE,
 )
 
@@ -45,6 +46,14 @@ async def async_setup_entry(
                 suffix="fan_active",
                 name="Fan Active",
                 device_class=BinarySensorDeviceClass.RUNNING,
+            ),
+            RealFlameBinarySensor(
+                entry=entry,
+                coordinator=coordinator,
+                state_key=STATE_CONNECTED,
+                suffix="connected",
+                name="Connected",
+                device_class=BinarySensorDeviceClass.CONNECTIVITY,
             ),
         ]
     )

@@ -13,6 +13,7 @@ from .const import (
     CMD_TRAILING,
     COMMAND_TIMEOUT_SECONDS,
     DEFAULT_PORT,
+    STATUS_POLL_RETRY_DELAY_SECONDS,
     MAX_TARGET_TEMPERATURE,
     MIN_TARGET_TEMPERATURE,
     RESP_ACK_PREFIX,
@@ -34,6 +35,11 @@ class RealFlameClient:
     def __init__(self, host: str, port: int = DEFAULT_PORT) -> None:
         self._host = host
         self._port = port
+
+    @property
+    def host(self) -> str:
+        """Return configured device host/IP."""
+        return self._host
 
     async def validate_connectivity(self) -> None:
         """Validate host reachability without requiring protocol response."""
@@ -59,11 +65,28 @@ class RealFlameClient:
 
         Returns parsed state when available, otherwise None.
         """
-        try:
-            raw = await self._send_command(CMD_STATUS_POLL, expect_response=True)
-        except (TimeoutError, OSError) as err:
-            _LOGGER.debug("Status poll failed for %s:%s: %s", self._host, self._port, err)
-            return None
+        raw: str | None = None
+        for attempt in (1, 2):
+            try:
+                raw = await self._send_command(CMD_STATUS_POLL, expect_response=True)
+            except (TimeoutError, OSError) as err:
+                _LOGGER.debug(
+                    "Status poll attempt %s failed for %s:%s: %s",
+                    attempt,
+                    self._host,
+                    self._port,
+                    err,
+                )
+                if attempt == 1:
+                    await asyncio.sleep(STATUS_POLL_RETRY_DELAY_SECONDS)
+                    continue
+                return None
+
+            if raw:
+                break
+
+            if attempt == 1:
+                await asyncio.sleep(STATUS_POLL_RETRY_DELAY_SECONDS)
 
         if not raw:
             _LOGGER.debug("Status poll returned no data for %s:%s", self._host, self._port)

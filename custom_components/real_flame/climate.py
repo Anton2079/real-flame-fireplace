@@ -28,7 +28,10 @@ from .const import (
     MAX_TARGET_TEMPERATURE,
     MIN_TARGET_TEMPERATURE,
     STATE_BURNER_ACTIVE,
+    STATE_CONNECTED,
+    STATE_CONSECUTIVE_POLL_FAILURES,
     STATE_CURRENT_TEMPERATURE,
+    STATE_HOST,
     STATE_POWERED_ON,
     STATE_TARGET_TEMPERATURE,
 )
@@ -110,6 +113,17 @@ class RealFlameClimateEntity(CoordinatorEntity, ClimateEntity):
             return HVACAction.HEATING
 
         return HVACAction.IDLE
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Expose diagnostics useful for troubleshooting connectivity."""
+        return {
+            "ip_address": self.coordinator.data.get(STATE_HOST),
+            "connected": bool(self.coordinator.data.get(STATE_CONNECTED, False)),
+            "consecutive_poll_failures": int(
+                self.coordinator.data.get(STATE_CONSECUTIVE_POLL_FAILURES, 0)
+            ),
+        }
 
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
         """Set HVAC mode and optimistically update local state."""
